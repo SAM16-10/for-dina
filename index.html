@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARWA ❤️</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  height:100vh;
+  background:url("bg.jpg") center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  overflow:hidden;
+}
+
+.overlay{
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
+  padding:25px;
+  border-radius:20px;
+  width:90%;
+  max-width:350px;
+  text-align:center;
+}
+
+button{
+  margin-top:20px;
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:#ff4d8d;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+#text{
+  min-height:120px;
+  font-size:17px;
+}
+
+/* قلوب */
+.heart{
+  position:absolute;
+  color:#ff4d8d;
+  animation:float 6s linear infinite;
+  opacity:0.7;
+}
+
+@keyframes float{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+  <h2>ARWA ❤️</h2>
+  <p id="text"></p>
+  <button id="btn" onclick="next()">Next 💕</button>
+</div>
+
+<!-- الصوت -->
+<audio id="music" src="music.mp3" loop></audio>
+
+<script>
+
+// 💖 الجمل
+const messages = [
+"You are my favorite picture in every memory 💗",
+"With you, even silence feels warm 💞",
+"Every smile of yours stays with me ✨",
+"My heart chose you, every time 💖",
+"You are my calm in the chaos 🌙",
+"Always you. Only you. Forever ❤️"
+];
+
+// 💌 الرسالة
+const finalMessage = `You’ve been part of my life for so long, and without even noticing, you became someone I care about in a completely different way.
+
+It’s not just friendship for me anymore… it’s more.
+
+The way I think about you, the way your presence affects me… it’s real, and I can’t ignore it.
+
+I love you, Arwa. Honestly… I do.
+
+Now that you’ve read this, I don’t want things to stay unclear between us.
+
+When you leave this page, I want you to tell me the truth — how do you feel about me?
+
+Not what you think I want to hear… just what’s real for you.
+
+Whatever your answer is, I’ll respect it.`;
+
+
+let i = 0;
+let j = 0;
+let isTyping = true;
+
+// 🎧 الصوت
+const music = document.getElementById("music");
+music.volume = 0.2;
+let musicStarted = false;
+
+// تشغيل الصوت أول click
+function startMusic(){
+  if(!musicStarted){
+    music.play().catch(()=>{});
+    musicStarted = true;
+  }
+}
+document.addEventListener("click", startMusic);
+
+// بداية
+window.onload = function(){
+  createHearts();
+  type();
+};
+
+// كتابة
+function type(){
+  isTyping = true;
+  document.getElementById("btn").style.opacity = 0.5;
+
+  let text = messages[i];
+
+  if(j < text.length){
+    document.getElementById("text").innerHTML += text[j];
+    j++;
+    setTimeout(type,25);
+  }else{
+    isTyping = false;
+    document.getElementById("btn").style.opacity = 1;
+  }
+}
+
+// التالي
+function next(){
+  if(isTyping) return;
+
+  i++;
+  j = 0;
+
+  if(i < messages.length){
+    document.getElementById("text").innerHTML = "";
+    type();
+  }else{
+    showLongMessage();
+  }
+}
+
+// الرسالة
+function showLongMessage(){
+  document.getElementById("text").innerHTML = finalMessage;
+  document.getElementById("btn").innerText = "Finish ❤️";
+
+  document.getElementById("btn").onclick = function(){
+    showEnd();
+  };
+}
+
+// النهاية
+function showEnd(){
+  document.querySelector(".overlay").innerHTML = `
+    <h2>❤️</h2>
+    <p style="font-size:20px;">
+      You made me the happiest person in the world.
+    </p>
+  `;
+}
+
+// القلوب
+function createHearts(){
+  setInterval(()=>{
+    let h = document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (15 + Math.random()*20) + "px";
+
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  },600);
+}
+
+</script>
+
+</body>
+</html>
