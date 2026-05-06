@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ARWA ❤️</title>
+<title>DINA ❤️</title>
 
 <style>
 *{
@@ -22,6 +22,27 @@ body{
   overflow:hidden;
 }
 
+/* واجهة الباسورد */
+#login-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+#login-screen input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
 .overlay{
   background: rgba(0,0,0,0.25);
   backdrop-filter: blur(8px);
@@ -30,6 +51,7 @@ body{
   width:90%;
   max-width:350px;
   text-align:center;
+  display: none; /* مخفي حتى كتابة الباسورد */
 }
 
 button{
@@ -48,7 +70,6 @@ button{
   font-size:17px;
 }
 
-/* قلوب */
 .heart{
   position:absolute;
   color:#ff4d8d;
@@ -65,18 +86,35 @@ button{
 
 <body>
 
-<div class="overlay">
-  <h2>ARWA ❤️</h2>
+<!-- شاشة القفل -->
+<div id="login-screen">
+  <h2>Enter Password</h2>
+  <input type="password" id="passInput" placeholder="****">
+  <button onclick="checkPass()">Unlock ❤️</button>
+</div>
+
+<div class="overlay" id="mainContent">
+  <h2>DINA ❤️</h2>
   <p id="text"></p>
   <button id="btn" onclick="next()">Next 💕</button>
 </div>
 
-<!-- الصوت -->
 <audio id="music" src="music.mp3" loop></audio>
 
 <script>
+// التحقق من الباسورد
+function checkPass() {
+  const pass = document.getElementById("passInput").value;
+  if(pass === "2006") {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+    createHearts();
+    type();
+  } else {
+    alert("Wrong Password!");
+  }
+}
 
-// 💖 الجمل
 const messages = [
 "You are my favorite picture in every memory 💗",
 "With you, even silence feels warm 💞",
@@ -86,14 +124,13 @@ const messages = [
 "Always you. Only you. Forever ❤️"
 ];
 
-// 💌 الرسالة
 const finalMessage = `You’ve been part of my life for so long, and without even noticing, you became someone I care about in a completely different way.
 
 It’s not just friendship for me anymore… it’s more.
 
 The way I think about you, the way your presence affects me… it’s real, and I can’t ignore it.
 
-I love you, Arwa. Honestly… I do.
+I love you, Dina. Honestly… I do.
 
 Now that you’ve read this, I don’t want things to stay unclear between us.
 
@@ -103,17 +140,14 @@ Not what you think I want to hear… just what’s real for you.
 
 Whatever your answer is, I’ll respect it.`;
 
-
 let i = 0;
 let j = 0;
 let isTyping = true;
 
-// 🎧 الصوت
 const music = document.getElementById("music");
 music.volume = 0.2;
 let musicStarted = false;
 
-// تشغيل الصوت أول click
 function startMusic(){
   if(!musicStarted){
     music.play().catch(()=>{});
@@ -122,13 +156,6 @@ function startMusic(){
 }
 document.addEventListener("click", startMusic);
 
-// بداية
-window.onload = function(){
-  createHearts();
-  type();
-};
-
-// كتابة
 function type(){
   isTyping = true;
   document.getElementById("btn").style.opacity = 0.5;
@@ -145,13 +172,10 @@ function type(){
   }
 }
 
-// التالي
 function next(){
   if(isTyping) return;
-
   i++;
   j = 0;
-
   if(i < messages.length){
     document.getElementById("text").innerHTML = "";
     type();
@@ -160,17 +184,14 @@ function next(){
   }
 }
 
-// الرسالة
 function showLongMessage(){
   document.getElementById("text").innerHTML = finalMessage;
   document.getElementById("btn").innerText = "Finish ❤️";
-
   document.getElementById("btn").onclick = function(){
     showEnd();
   };
 }
 
-// النهاية
 function showEnd(){
   document.querySelector(".overlay").innerHTML = `
     <h2>❤️</h2>
@@ -180,7 +201,6 @@ function showEnd(){
   `;
 }
 
-// القلوب
 function createHearts(){
   setInterval(()=>{
     let h = document.createElement("div");
@@ -188,12 +208,10 @@ function createHearts(){
     h.innerHTML="❤";
     h.style.left = Math.random()*100 + "vw";
     h.style.fontSize = (15 + Math.random()*20) + "px";
-
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
   },600);
 }
-
 </script>
 
 </body>
